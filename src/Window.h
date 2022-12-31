@@ -3,23 +3,18 @@
 #endif
 
 #include "windows.h"
+#include <iostream>
 
+#ifdef DEBUG
+#include "debug/DebugTools.h"
+#endif
+
+#ifndef WINDOW_H
+#define WINDOW_H
 class Window
 {
 public:
-    static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
-    {
-        Window* pThis = nullptr;
-        pThis = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-        if (pThis) 
-        {
-            return pThis->HandleMessage(uMsg, wParam, lParam);
-        }
-        else 
-        {
-            return DefWindowProc(hwnd, uMsg, wParam, lParam);
-        }
-    }
+    static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     bool MakeWindow(HINSTANCE hInstance, wchar_t* windowTitle);
     LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -30,3 +25,4 @@ private:
     WNDCLASS m_wc;
     HWND m_hwnd;
 };
+#endif

@@ -8,15 +8,35 @@ option(UNICODE on)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(SOURCE 
+list(APPEND SOURCES
     "${PROJECT_SOURCE_DIR}/src/NoiseGeneratorApp.cpp"
     "${PROJECT_SOURCE_DIR}/src/Window.cpp")
 
-add_executable(Noise_Generator WIN32 ${SOURCE} ${HEADERS})
+list(APPEND HEADERS
+    "${PROJECT_SOURCE_DIR}/src/Window.h")
+
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    message("Making Debug Build...")
+    list(APPEND SOURCES
+        "${PROJECT_SOURCE_DIR}/src/debug/DebugConsole.cpp")
+    list(APPEND HEADERS
+        "${PROJECT_SOURCE_DIR}/src/debug/DebugConsole.h"
+        "${PROJECT_SOURCE_DIR}/src/debug/DebugTools.h")
+endif()
+
+add_executable(Noise_Generator WIN32 ${SOURCES} ${HEADERS})
+
+list(APPEND INCLUDE_DIRS
+    "${PROJECT_BINARY_DIR}"
+    "${PROJECT_SOURCE_DIR}/src")
+
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    add_compile_definitions(DEBUG)
+    list(APPEND INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src/debug")
+endif()
 
 target_include_directories(Noise_Generator PUBLIC 
-                          "${PROJECT_BINARY_DIR}"
-                          "${PROJECT_SOURCE_DIR}/src")
+                          ${INCLUDE_DIRS})
 
 configure_file("${PROJECT_SOURCE_DIR}/src/NoiseGeneratorAppConfig.h.in" 
                "${PROJECT_SOURCE_DIR}/src/NoiseGeneratorAppConfig.h")

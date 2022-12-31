@@ -1,0 +1,5 @@
+#ifndef UNICODE
+#define UNICODE
+#endif
+
+const wchar_t* APP_TITLE = L"Noise Generator - v.@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@";
